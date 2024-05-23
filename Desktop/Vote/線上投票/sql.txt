@@ -1,0 +1,78 @@
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE DATABASE IF NOT EXISTS `vote` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `vote`;
+
+
+
+CREATE TABLE `event` (
+  `id` int NOT NULL,
+  `name` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isreg` tinyint NOT NULL DEFAULT '0',
+  `ismulti` tinyint NOT NULL DEFAULT '0',
+  `isdelete` tinyint NOT NULL DEFAULT '0',
+  `multinum` smallint NOT NULL DEFAULT '1',
+  `starttime` datetime NOT NULL,
+  `endtime` datetime NOT NULL,
+  `isrepeat` tinyint NOT NULL DEFAULT '0',
+  `logintype` tinyint NOT NULL DEFAULT '0',
+  `isbegin` tinyint NOT NULL DEFAULT '0',
+  `unit` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+CREATE TABLE `item` (
+  `id` int NOT NULL,
+  `name` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dept` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no` smallint DEFAULT NULL,
+  `votes` smallint NOT NULL DEFAULT '0',
+  `isdelete` tinyint NOT NULL DEFAULT '0',
+  `event_id` int NOT NULL,
+  `comment` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+CREATE TABLE `vote` (
+  `id` int NOT NULL,
+  `event_id` int NOT NULL,
+  `isvoted` tinyint NOT NULL DEFAULT '0',
+  `votewho` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dept` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `account` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pswd` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `item`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `vote`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `event`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `item`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `vote`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+COMMIT;

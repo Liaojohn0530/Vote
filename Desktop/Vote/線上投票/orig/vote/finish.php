@@ -29,7 +29,7 @@ $event = $stmt->fetch();
 <?php 
 $isShowLink = strpos( $event['name'], '考績委員' ) !== false && !in_array($_COOKIE["vote_votename"],$keynames);
 if($isShowLink){ ?>
-  <h2 ><a style="color:#d50000;font-weight:bold;border:5px solid #043682;border-radius:10px;" href='https://self.judicial.gov.tw/vote/index.php?id=62'>請點此繼續投甄審委員會</a></h2>
+  <h2 ><a style="color:#d50000;font-weight:bold;border:5px solid #043682;border-radius:10px;" href='https://self.judicial.gov.tw/vote/index.php?id=87'>請點此繼續投甄審委員會</a></h2>
 <?php } ?>
 
 <br>

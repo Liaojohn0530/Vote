@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 require_once('init.php');
 $title = '司法院線上投票';
 
@@ -9,7 +9,12 @@ $stmt = $pdo->prepare("SELECT * FROM event where id =:id");
 $stmt->execute(['id' => $_GET['id']]); 
 $event = $stmt->fetch();
 
+date_default_timezone_set("Asia/Taipei");
+//echo date_default_timezone_get() ."<br>";
+
 $now = time();
+//echo $now ."<br>";
+//echo strtotime($event['endtime']);
 if($now >= strtotime($event['endtime'])){
     echo "<h1 class='text-center'>投票時間已結束</h1>";
     die;
@@ -56,18 +61,32 @@ if(!empty($_POST['item'])){
         die;
     }
 
+	if (is_array($_POST["item"]) and count($_POST["item"]) > 2){
+		header('Location: login.php?id='. $_GET['id'].'&msgjs='.urlencode('錯誤，投票數異常'));
+        die;
+	}
     $pdo->beginTransaction();
 
     $sql = "UPDATE vote SET isvoted=1 WHERE event_id=:event_id AND id=:id";
     $data = ['event_id'=>$_GET['id'], 'id'=>$_COOKIE['vote_id']];
+	$result = $pdo->prepare($sql)->execute($data);
+	
+	//file_put_contents('php://stderr', print_r($_POST['item'], TRUE));
+	if ($event["ismulti"]){
+		foreach ($_POST["item"] as $itemid){
+			echo "<script>console.log(".$itemid.")</script>";
+			$sql2 = "UPDATE item SET votes = votes+1 WHERE id=:id";
+			$data2 = ['id'=>$itemid];
+			
+			$result2 = $pdo->prepare($sql2)->execute($data2);
+		}
+	}
+	else{
+		$sql2 = "UPDATE item SET votes = votes+1 WHERE id=:id";
+		$data2 = ['id'=>$_POST['item']];
 
-    $result = $pdo->prepare($sql)->execute($data);
-
-
-    $sql2 = "UPDATE item SET votes = votes+1 WHERE id=:id";
-    $data2 = ['id'=>$_POST['item']];
-
-    $result2 = $pdo->prepare($sql2)->execute($data2);
+		$result2 = $pdo->prepare($sql2)->execute($data2);
+	}
 
     $comm = $pdo->commit();
 
@@ -125,8 +144,16 @@ if(!empty($_POST['item'])){
                         <tr>
                             <td>
                                 <label class='text-center' for='r<?= $i['id'] ?>' style='display:block;margin:0'>
-                                <input style='-ms-transform:scale(2);-webkit-transform:scale(2);transform:scale(2);' type="radio" name="item" id="r<?= $i['id'] ?>" value="<?= $i['id'] ?>" required>
-                                </label>
+                                <!--<input style='-ms-transform:scale(2);-webkit-transform:scale(2);transform:scale(2);' type='radio' name='item' id="r<?= $i['id'] ?>" value="<?= $i['id'] ?>" required>-->
+								<?php 
+									if ($event["ismulti"]){
+										echo "<input class='multi_checkbox' style='-ms-transform:scale(2);-webkit-transform:scale(2);transform:scale(2);' type='checkbox' name='item[]' id='r".$i['id']."' value=".$i['id']." onclick='set_checkbox()'>";
+									}
+									else{
+										echo "<input style='-ms-transform:scale(2);-webkit-transform:scale(2);transform:scale(2);' type='radio' name='item' id='r".$i['id']."' value=".$i['id']."required>";
+									}
+									echo "</label>";
+								?>
                             </td>
                             <td><?= $i['no'] ?></td>
                             <td class='bold' ><?= $i['name'] ?></td>
@@ -136,7 +163,11 @@ if(!empty($_POST['item'])){
                         </tr>
                     <?php } ?>
                     </table>
-                    <button type="submit" onclick="return confirm('如點選「確認投票」鍵後，就不能再更改圈選結果，請確認後再點選')" class="btn btn-block btn-success">確認投票</button>
+					<?php if ($event["ismulti"]){ ?>
+						<button type="submit" onclick="return show_comfirm();" class="btn btn-block btn-success">確認投票</button>
+					<?php } else { ?>
+						<button type="submit" onclick="return confirm('如點選「確認投票」鍵後，就不能再更改圈選結果，請確認後再點選')" class="btn btn-block btn-success">確認投票</button>
+					<?php } ?>
                   </form>
                 <?php } ?>
                 

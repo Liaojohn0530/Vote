@@ -4,8 +4,12 @@ $pdo = new PDO('mysql:host='.Config::host.';dbname='.Config::db.';', Config::use
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
+//檢查已結束的投票活動，將投票人的機敏資料刪除(身分證,生日)
+$sql = "UPDATE vote set account = '投票活動結束，清除機敏資料', pswd = '投票活動結束，清除機敏資料' WHERE event_id in (select id from event where endtime < NOW())";
+$result = $pdo->prepare($sql)->execute();
+
 //機要人員姓名
-$keynames = ["BB","CC","陳姿穎","郭柏鴻","何友倫"];
+$keynames = ["BB","CC","莊繡霞","郭岱純","何友倫"];
 
 //登入驗證
 $nologin = ['login','adminlogin'];

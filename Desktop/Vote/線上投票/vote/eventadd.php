@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once('init.php');
 $title = '管理員後台';
 
@@ -8,8 +8,8 @@ if(empty($_COOKIE['vote_admin'])){
 
 if (!empty($_POST))
 {
-    $sql = "INSERT INTO event (name,starttime,endtime,unit) 
-    VALUES (:name,:starttime,:endtime,:unit)";
+    $sql = "INSERT INTO event (name,starttime,endtime,unit, ismulti) 
+    VALUES (:name,:starttime,:endtime,:unit, :ismulti)";
     
     $date = new DateTime();
 
@@ -73,6 +73,17 @@ if (!empty($_POST))
                         <label for="casenum" class="col-xs-3 control-label"><span class="red"></span>建立單位</label>
                         <div class="col-xs-9">
                             <input type="text" class="form-control" id="unit" name="unit" readonly value='<?= $_COOKIE['vote_admin_unit'] ?>'>
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <label for="votetype" class="col-xs-3 control-label"><span class="red"></span>投票類型</label>
+                        <div class="radio col-xs-9">
+							<div class="col-xs-6">
+								<label><input type="radio" name="ismulti" value=0 required>一人一票</label>
+							</div>
+							<div class="col-xs-6">
+								<label><input type="radio" name="ismulti" value=1 checked required>一人兩票</label>
+							</div>
                         </div>
                     </div>
                     <div class="form-group">

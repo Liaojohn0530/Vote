@@ -10,16 +10,11 @@ class Config {
 
     
     //資料庫連線-正式機
-    //const host    = '210.69.124.171';
-    //const user    = 'yida';
-    //const pwd     = '!QAZ7ujm';
+    const host    = '210.69.124.171';
+    const user    = 'yida';
+    const pwd     = '!QAZ7ujm';
     const db      = 'vote';
-	
-	//測試機
-	const host    = 'localhost';
-    const user    = 'root';
-    const pwd     = '!QAZ2wsx';
-	
+
     //後台管理員帳密
     //const adminaccount     = 'admin';
     //const adminpswd      = 'tpj666';

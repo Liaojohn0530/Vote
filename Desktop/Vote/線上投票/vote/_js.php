@@ -1,4 +1,4 @@
-<script src="js/modernizr-custom.js"></script>
+﻿<script src="js/modernizr-custom.js"></script>
 <script src="js/polyfiller.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
@@ -7,6 +7,52 @@
 <script src="js/datatables.min.js"></script>
 <script src="js/main.js"></script>
 <script>
+// checkbox 顯示控制
+function set_checkbox(){
+	var boxes = document.getElementsByClassName("multi_checkbox");
+	var check_count = 0;
+	Array.prototype.forEach.call(boxes, function(val){
+		if (val.checked){
+			check_count++;
+		}
+	})
+	if (check_count == 2){
+		Array.prototype.forEach.call(boxes, function(val){
+			if (!val.checked){
+				val.disabled = true;
+			}
+		})
+	}
+	if (check_count < 2){
+		Array.prototype.forEach.call(boxes, function(val){
+			val.disabled = false;
+		})
+	}
+}
+// 送出訊息
+function show_comfirm(){
+	var boxes = document.getElementsByClassName("multi_checkbox");
+	var check_count = 0;
+	Array.prototype.forEach.call(boxes, function(val){
+		if (val.checked){
+			check_count++;
+		}
+	})
+	if (check_count < 1){
+		alert('尚未勾選');
+		return false;
+	}
+	if (check_count < 2){
+		return confirm('注意！至多可勾選2票，目前僅勾選'+check_count.toString()+'票\n如點選「確認投票」鍵後，就不能再更改圈選結果，請確認後再點選');
+	}
+	else if (check_count == 2){
+		return confirm('如點選「確認投票」鍵後，就不能再更改圈選結果，請確認後再點選');
+	}
+	else{
+		alert('錯誤，至多只能勾選兩票');
+		return false;
+	}
+}
 function set_webshim(){
     webshim.activeLang('zh-TW');
     webshims.setOptions('waitReady', false);

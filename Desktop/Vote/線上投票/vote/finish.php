@@ -27,9 +27,12 @@ $event = $stmt->fetch();
   <h2>您已完成投票</h2>
 
 <?php 
-$isShowLink = strpos( $event['name'], '考績委員' ) !== false && !in_array($_COOKIE["vote_votename"],$keynames);
-if($isShowLink){ ?>
-  <h2 ><a style="color:#d50000;font-weight:bold;border:5px solid #043682;border-radius:10px;" href='https://self.judicial.gov.tw/vote/index.php?id=87'>請點此繼續投甄審委員會</a></h2>
+$isShowLink = strpos( $event['name'], '司法院113年度考績委員會' ) !== false && !in_array($_COOKIE["vote_votename"],$keynames);
+$isShowLink2 = strpos( $event['name'], '(測試3)' ) !== false && !in_array($_COOKIE["vote_votename"],$keynames);
+if($isShowLink && $isShowLink2){ ?>
+  <h2 ><a style="color:#d50000;font-weight:bold;border:5px solid #043682;border-radius:10px;" href='https://self.judicial.gov.tw/vote/index.php?id=91'>請點此繼續投甄審委員會</a></h2>
+<?php } elseif($isShowLink){ ?>
+  <h2 ><a style="color:#d50000;font-weight:bold;border:5px solid #043682;border-radius:10px;" href='https://self.judicial.gov.tw/vote/index.php?id=91'>請點此繼續投甄審委員會</a></h2>
 <?php } ?>
 
 <br>
